@@ -1,0 +1,17 @@
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "8030:3000"
+    restart: unless-stopped
+    environment:
+      - ORIGIN=https://bajetai.my
+
+  backend:
+    build: ./backend
+    ports:
+      - "8010:8010"
+    volumes:
+      - ./backend/uploads:/app/uploads
+      - ./backend/data:/app/data
+    restart: unless-stopped
