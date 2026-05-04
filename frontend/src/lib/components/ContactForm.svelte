@@ -2,18 +2,15 @@
 	let name = $state('');
 	let email = $state('');
 	let company = $state('');
-	let projectType = $state('');
+	let inquiryType = $state('');
 	let description = $state('');
 	let file = $state<File | null>(null);
 	let formStatus = $state<'idle' | 'loading' | 'success' | 'error'>('idle');
 	let errorMessage = $state('');
 
-	const projectTypes = [
-		'Data Analysis & Reporting',
-		'Data Pipelines & Automation',
-		'Data Visualization & Dashboards',
-		'Custom Tooling & APIs',
-		'Other'
+	const inquiryTypes = [
+		'Quotation Request',
+		'General Inquiry'
 	];
 
 	const maxFileSize = 10 * 1024 * 1024; // 10MB
@@ -57,7 +54,7 @@
 		if (!name.trim()) { errorMessage = 'Name is required.'; return false; }
 		if (!email.trim()) { errorMessage = 'Email is required.'; return false; }
 		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { errorMessage = 'Please enter a valid email address.'; return false; }
-		if (!projectType) { errorMessage = 'Please select a project type.'; return false; }
+		if (!inquiryType) { errorMessage = 'Please select an inquiry type.'; return false; }
 		if (!description.trim()) { errorMessage = 'Project description is required.'; return false; }
 		if (description.trim().length < 20) { errorMessage = 'Please provide a more detailed description (at least 20 characters).'; return false; }
 		errorMessage = '';
@@ -76,7 +73,7 @@
 			formData.append('name', name.trim());
 			formData.append('email', email.trim());
 			if (company.trim()) formData.append('company', company.trim());
-			formData.append('project_type', projectType);
+			formData.append('inquiry_type', inquiryType);
 			formData.append('description', description.trim());
 			if (file) formData.append('file', file);
 
@@ -101,7 +98,7 @@
 		name = '';
 		email = '';
 		company = '';
-		projectType = '';
+		inquiryType = '';
 		description = '';
 		file = null;
 		formStatus = 'idle';
@@ -111,8 +108,8 @@
 
 <section id="contact" class="contact">
 	<div class="contact-inner">
-		<h2 class="section-title">Start a Project</h2>
-		<p class="section-subtitle">Tell me about your data needs</p>
+		<h2 class="section-title">Get in Touch</h2>
+		<p class="section-subtitle">Questions or project ideas? Drop me a message.</p>
 
 		{#if formStatus === 'success'}
 			<div class="success-card">
@@ -150,10 +147,10 @@
 				</div>
 
 				<div class="form-group">
-					<label for="project-type">Project Type <span class="required">*</span></label>
-					<select id="project-type" bind:value={projectType} required disabled={formStatus === 'loading'}>
-						<option value="" disabled>Select a project type</option>
-						{#each projectTypes as type}
+					<label for="inquiry-type">Inquiry Type <span class="required">*</span></label>
+					<select id="inquiry-type" bind:value={inquiryType} required disabled={formStatus === 'loading'}>
+						<option value="" disabled>Select inquiry type</option>
+						{#each inquiryTypes as type}
 							<option value={type}>{type}</option>
 						{/each}
 					</select>

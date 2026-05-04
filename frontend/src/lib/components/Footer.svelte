@@ -1,10 +1,10 @@
 <footer class="footer">
 	<div class="footer-inner">
 		<div class="footer-left">
-			&copy; 2026 <strong>bajetAI</strong> — Ahmad Fakrul Radzy
+			&copy; 2026 <strong>bajetAI</strong> — Radzy Ahmad
 		</div>
 		<div class="footer-right">
-			<a href="mailto:hello@bajetai.my">hello@bajetai.my</a>
+			<a href="https://bajetai.my">bajetai.my</a>
 		</div>
 	</div>
 </footer>

@@ -7,7 +7,7 @@ class SubmissionBase(BaseModel):
     name: str
     email: EmailStr
     company: Optional[str] = None
-    project_type: str
+    inquiry_type: str
     description: str
 
 

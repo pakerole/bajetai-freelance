@@ -2,11 +2,12 @@ import os
 import uuid
 import logging
 
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile, Request
+from fastapi.responses import JSONResponse
 
 from app.models import SubmissionBase
 from app.storage import init_db, save_submission, get_submission
-from app.email import send_submission_notification
+from app.telegram import init_telegram, send_submission_notification
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("bajetai")
@@ -23,11 +24,26 @@ MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
 async def startup():
     os.makedirs(UPLOAD_DIR, exist_ok=True)
     await init_db()
+    init_telegram(
+        bot_token=os.environ.get("TELEGRAM_BOT_TOKEN", ""),
+        chat_id=os.environ.get("TELEGRAM_CHAT_ID", ""),
+    )
     logger.info("Backend started — DB initialised, upload dir ready")
 
 
+@app.get("/health")
+@app.head("/health")
+async def health_root(request: Request):
+    if request.method == "HEAD":
+        return JSONResponse(content=None, status_code=200)
+    return {"status": "ok"}
+
+
 @app.get("/api/health")
-async def health():
+@app.head("/api/health")
+async def health_api(request: Request):
+    if request.method == "HEAD":
+        return JSONResponse(content=None, status_code=200)
     return {"status": "ok"}
 
 
@@ -36,7 +52,7 @@ async def submit(
     name: str = Form(..., min_length=1),
     email: str = Form(...),
     company: str | None = Form(None),
-    project_type: str = Form(..., min_length=1),
+    inquiry_type: str = Form(..., min_length=1),
     description: str = Form(..., min_length=1),
     file: UploadFile | None = File(None),
 ):
@@ -46,7 +62,7 @@ async def submit(
             name=name,
             email=email,
             company=company or None,
-            project_type=project_type,
+            inquiry_type=inquiry_type,
             description=description,
         )
     except Exception as e:
@@ -82,18 +98,18 @@ async def submit(
         name=validated.name,
         email=validated.email,
         company=validated.company,
-        project_type=validated.project_type,
+        inquiry_type=validated.inquiry_type,
         description=validated.description,
         filename=saved_filename,
         filepath=saved_filepath,
     )
     logger.info("Submission #%d saved from %s <%s>", submission_id, validated.name, validated.email)
 
-    # Send email notification (fire-and-forget, errors are logged but non-blocking)
+    # Send Telegram notification (fire-and-forget, errors are logged but non-blocking)
     send_submission_notification(
         name=validated.name,
         email=validated.email,
-        project_type=validated.project_type,
+        inquiry_type=validated.inquiry_type,
         description=validated.description,
         company=validated.company,
         filename=saved_filename,

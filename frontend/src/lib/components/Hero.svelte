@@ -8,7 +8,7 @@
 <section class="hero">
 	<div class="hero-inner">
 		<div class="hero-badge">Open for projects</div>
-		<h1 class="hero-name">Ahmad Fakrul Radzy<br /><span class="hero-nickname">(Radzy)</span></h1>
+		<h1 class="hero-name">Radzy Ahmad</h1>
 		<p class="hero-tagline">Data Scientist &amp; Analytics Engineer</p>
 		<p class="hero-one-liner">"Turning complex data into clear decisions"</p>
 		<button class="hero-cta" onclick={scrollToContact}>

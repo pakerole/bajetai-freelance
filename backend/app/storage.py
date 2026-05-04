@@ -21,7 +21,7 @@ async def init_db():
                 name TEXT NOT NULL,
                 email TEXT NOT NULL,
                 company TEXT,
-                project_type TEXT NOT NULL,
+                inquiry_type TEXT NOT NULL,
                 description TEXT NOT NULL,
                 filename TEXT,
                 filepath TEXT,
@@ -34,7 +34,7 @@ async def init_db():
 async def save_submission(
     name: str,
     email: str,
-    project_type: str,
+    inquiry_type: str,
     description: str,
     company: Optional[str] = None,
     filename: Optional[str] = None,
@@ -44,10 +44,10 @@ async def save_submission(
     async with aiosqlite.connect(DB_PATH) as db:
         cursor = await db.execute(
             """
-            INSERT INTO submissions (name, email, company, project_type, description, filename, filepath)
+            INSERT INTO submissions (name, email, company, inquiry_type, description, filename, filepath)
             VALUES (?, ?, ?, ?, ?, ?, ?)
             """,
-            (name, email, company, project_type, description, filename, filepath),
+            (name, email, company, inquiry_type, description, filename, filepath),
         )
         await db.commit()
         return cursor.lastrowid
@@ -58,7 +58,7 @@ async def get_submission(submission_id: int):
     async with aiosqlite.connect(DB_PATH) as db:
         db.row_factory = aiosqlite.Row
         cursor = await db.execute(
-            "SELECT id, name, email, company, project_type, description, filename, filepath, created_at "
+            "SELECT id, name, email, company, inquiry_type, description, filename, filepath, created_at "
             "FROM submissions WHERE id = ?",
             (submission_id,),
         )
@@ -73,7 +73,7 @@ async def list_submissions(limit: int = 100):
     async with aiosqlite.connect(DB_PATH) as db:
         db.row_factory = aiosqlite.Row
         cursor = await db.execute(
-            "SELECT id, name, email, company, project_type, description, filename, filepath, created_at "
+            "SELECT id, name, email, company, inquiry_type, description, filename, filepath, created_at "
             "FROM submissions ORDER BY id DESC LIMIT ?",
             (limit,),
         )

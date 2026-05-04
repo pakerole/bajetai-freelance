@@ -4,13 +4,13 @@
 
 		<div class="about-text">
 			<p>
-				With a strong foundation in Python-driven data analysis and machine learning, I help businesses extract meaningful insights from their data — whether it's cleaning messy datasets, building predictive models, fine-tuning large language models, or creating automated reporting pipelines.
+				With a strong foundation in Python-driven data analysis and machine learning, I help businesses extract meaningful insights from their data — whether it's cleaning messy datasets, building predictive models, segmenting customers, or creating automated reporting pipelines.
 			</p>
 			<p>
-				My work spans from telecommunications analytics (network performance, KPI monitoring, log analysis) to applied ML (LLM fine-tuning, computer vision, speech processing). I bring data science techniques to real-world operational problems, not just academic exercises.
+				My work spans from exploratory analysis and statistical modeling to applied machine learning — classification, regression, clustering, and time-series forecasting. I bring data science techniques to real-world business problems, not just academic exercises.
 			</p>
 			<p>
-				Every project starts with understanding your data. I work across industries — from telecom to finance to e-commerce — to build solutions that are practical, scalable, and actually useful.
+				Every project starts with understanding your data. I work across industries — from retail and finance to healthcare and logistics — to build solutions that are practical, scalable, and actually useful.
 			</p>
 		</div>
 
