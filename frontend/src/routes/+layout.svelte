@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
+	import DataVizBackground from '$lib/components/DataVizBackground.svelte';
 
 	let { children } = $props();
 
@@ -51,6 +52,8 @@
 <svelte:head>
 	<link rel="icon" href={favicon} />
 </svelte:head>
+
+<DataVizBackground />
 
 <nav class="nav">
 	<div class="nav-inner">
