@@ -7,7 +7,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app/ ./app/
 
-RUN mkdir -p /app/uploads /app/data
+RUN mkdir -p /app/uploads /app/data \
+    && groupadd -r appuser \
+    && useradd -r -g appuser -d /app appuser \
+    && chown -R appuser:appuser /app
+
+USER appuser
 
 EXPOSE 8010
 

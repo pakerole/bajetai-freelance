@@ -15,6 +15,11 @@ WORKDIR /app
 COPY --from=builder /app/build ./build
 COPY --from=builder /app/package.json ./
 
+RUN addgroup -S appuser && adduser -S appuser -G appuser \
+    && chown -R appuser:appuser /app
+
+USER appuser
+
 ENV HOST=0.0.0.0
 ENV PORT=3000
 

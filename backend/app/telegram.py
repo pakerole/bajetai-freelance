@@ -1,4 +1,6 @@
+import html
 import logging
+
 import httpx
 
 logger = logging.getLogger("bajetai")
@@ -29,19 +31,27 @@ def send_submission_notification(
         logger.warning("Telegram notification skipped — not configured")
         return
 
-    company_line = f"🏢 {company}" if company else ""
-    file_line = f"📎 {filename}" if filename else ""
+    # Escape all user input to prevent HTML injection in Telegram
+    safe_name = html.escape(name)
+    safe_email = html.escape(email)
+    safe_company = html.escape(company) if company else ""
+    safe_inquiry = html.escape(inquiry_type)
+    safe_desc = html.escape(description)
+    safe_file = html.escape(filename) if filename else ""
+
+    company_line = f"🏢 {safe_company}" if safe_company else ""
+    file_line = f"📎 {safe_file}" if safe_file else ""
 
     text = (
         f"📩 <b>New Inquiry — bajetAI</b>\n"
         f"{'─' * 30}\n"
-        f"👤 <b>Name:</b> {name}\n"
-        f"📧 <b>Email:</b> {email}\n"
+        f"👤 <b>Name:</b> {safe_name}\n"
+        f"📧 <b>Email:</b> {safe_email}\n"
     )
     if company_line:
         text += f"{company_line}\n"
-    text += f"🏷 <b>Type:</b> {inquiry_type}\n\n"
-    text += f"💬 <b>Message:</b>\n{description}\n"
+    text += f"🏷 <b>Type:</b> {safe_inquiry}\n\n"
+    text += f"💬 <b>Message:</b>\n{safe_desc}\n"
     if file_line:
         text += f"\n{file_line}\n"
 
